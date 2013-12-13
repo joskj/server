@@ -1,0 +1,20 @@
+---file: userInsertTest.json---
+
+{
+	"userName":"Jo Skjermo",
+	"pinCode":"1234",
+	"gender":"male",
+	"maritalStatus":"singel",
+	"numChildren":0,
+	"birtYear":1975,
+	"occupation":"Forsker",
+	"subscription":"None",
+	"residence":"Tiller",
+	"area":7075
+}
+
+
+---curl---
+C:\Users\joskj\Development\server>c:\putty\curl.exe -X POST -d @userInsertTest.json http://localhost:8081/smio/InsertNewUserREST 
+--header "Content-Type:application/json"
+
