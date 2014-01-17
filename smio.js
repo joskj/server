@@ -3,7 +3,6 @@ var express = require('express');
 var mongoose = require('mongoose');
 var app = express();
 
-
 var ipaddr  = "127.0.0.1";
 var port    = 8081;
 mongoose.connect('mongodb://localhost/smio');
@@ -15,8 +14,9 @@ app.configure(function () {
 });
 
 var apiSMiO = require('./controller/apiSMiO.js');
-app.post('/smio/InsertNewUserREST', apiSMiO.postInsertNewUser);
-app.post('/smio/AuthenticateUserREST', apiSMiO.postAuthenticateUser);
+
+//app.post('/smio/InsertNewUserREST', apiSMiO.postInsertNewUser);
+//app.post('/smio/AuthenticateUserREST', apiSMiO.postAuthenticateUser);
 //app.post('/smio/InsertNewTripDataREST', apiSMiO.postInsertNewTripData);
 //app.post('/smio/UpdateTripDataREST', apiSMiO.postUpdateTripData);
 //app.post('/smio/SendEmailForNewPasswordREST', apiSMiO.postSendEmailForNewPassword);
@@ -24,6 +24,31 @@ app.post('/smio/AuthenticateUserREST', apiSMiO.postAuthenticateUser);
 //app.post('/smio/DeleteUserREST', apiSMiO.postDeleteUser);
 //app.post('/smio/DeleteAllTripsREST', apiSMiO.postDeleteAllTrips);
 //app.post('/smio/DeleteAllTripsByIdREST', apiSMiO.postDeleteAllTripsById);
+
+
+
+//Receive a post request containing username and password
+//Test file "postAuthenticateUserTest.json":
+//{
+//	"userName":"Jo.Skjermo@sintef.no",
+//	"pinCode":"1234"
+//}
+//Test using curl:
+//curl.exe -X POST -d @postAuthenticateUserTest.json http://localhost:8081/smio/AuthenticateUser  --header "Content-Type:application/json"
+//Return a user json object, TODO - return a TOKEN instead
+app.post('/smio/AuthenticateUser',apiSMiO.authenticateUser);
+//app.post('/smio/User',apiSMiO.user);
+
+/*
+app.post('/smio/RegisterNewUser',apiSMiO.postRegisterNewUser);
+app.post('/smio/ResetPasswordRequest',apiSMiO.postResetPasswordRequest);
+app.post('/smio/ResetPasswordAuthenticated',apiSMiO.postResetPasswordAuthenticated);
+app.post('/smio/DeleteUser'.apiSMiO.postDeleteUser);
+app.post('/smio/Trips',api.SMiO.postTrips);
+app.post('/smio/UploadTrip',api.SMiO.postUploadTrip);
+app.post('/smio/DeleteTrip',apiSMiO.postDeleteTrip);
+app.post('/smio/DeleteAllTrips',apiSMiO.postDeleteAllTrips);
+*/
 
 //  And start the app on that interface (and port).
 app.listen(port, ipaddr, function() {
