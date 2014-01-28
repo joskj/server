@@ -1,4 +1,4 @@
----file: userInsertTest.json---
+---file: registerNewUser.json---
 
 {
 	"userName":"Jo Skjermo",
@@ -15,6 +15,6 @@
 
 
 ---curl---
-C:\Users\joskj\Development\server>c:\putty\curl.exe -X POST -d @userInsertTest.json http://localhost:8081/smio/InsertNewUserREST 
---header "Content-Type:application/json"
+cd C:\Users\joskj\Development\server
+c:\putty\curl.exe -X POST -d @userInsertTest.json http://localhost:8081/smio/RegisterNewUser --header "Content-Type:application/json"
 

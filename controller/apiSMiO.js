@@ -53,27 +53,105 @@ exports.authenticateUser = function(req, res) {
 */
 
 
+//
+//Receive password reset request
+//http://127.0.0.1:8081/smio/ResetPasswordRequest?username=jo.skjermo@sintef.no&passwordnew=test
+//
+exports.resetPasswordRequest=function(req,res){
+	console.log('TEST:',req.query.username);
+	//innput: req.body.username,req.body.password,req.body.newPassword,req.body.newPasswordAgain
+	//check old password against db
+	//check new passwords against eachother
+	//insert new password temp
+	//passwordTemp=hash(req.body.passwordNew);
+		//User.update({username:req.body.username, $set:{passwordTemp=passwordTemp}},function(err,results){
+		//	console.log(result);
+		//});
+
+	//doublehash the new password and send as email a GET link for //smio/ResetPasswordAuthenticated?id=username&auth=doublehashedpassword
+}
+
+//
+//Receive password reset request
+//http://127.0.0.1:8081/smio/ResetPasswordAuthenticated?username=jo.skjermo@sintef.no&auth=blablabla
+//
+exports.resetPasswordAuthenticated=function(req, res) {
+		//req.params.username,
+		//req.params.auth
+
+		//if auth == doublehashed temp new password, set password = new password, and remove temp password.
+    		//console.log(req.params.name)
+    		//res.send([{Dog: dogtag}]);
+}
+
+
+
+
+//
+//RETURN USER DATA, username and password must be sett
+//
+exports.userData = function(req,res){
+	User.getAuthenticated(req.body.username, req.body.password, function(err, user, reason){
+		//if (err) throw err;
+		if(err){
+			console.log('login user - something wrong');
+			res.send(403, "AuthenticationFailed");
+		}
+		
+     		// login was successful if we have a user
+        	if (user) {
+           	// handle login success
+            	console.log('login success, get user data');
+		 	res.send([{User: user}]); //REMEMBER TO ZERO PASSWORD
+            	return;
+        	}
+		console.log('Error getting user data:',err);
+		res.send(403, "AuthenticationFailed");
+    });
+}
+
+//
+//REGISTER NEW USER
+//
+exports.registerNewUser = function(req,res){
+	var testUser = new User({
+		username: req.body.username,
+		password: req.body.password,
+		gender:req.body.gender,
+		maritalStatus:req.body.maritalStatus,
+		numChildren:req.body.numChildren,
+		birtYear:req.body.birtYear,
+		occupation:req.body.occupation,
+		subscription:req.body.subscription,
+		residence:req.body.residence,
+		area:req.body.area
+	});
+	testUser.save(function(err) {
+		//if (err) throw err;
+		if(err){
+			console.log('Error storing new user:',err);
+			res.send(403, "AuthenticationFailed");
+		}else{	//NEW USER REGISTERED - return user - remember to zero password
+			//console.log('user is :',testUser);
+			res.send([{User: testUser}]);
+		}
+	});
+}
 
 //SMIO user authentication, return user (TODO: return "token")
 exports.authenticateUser = function(req,res){
-/*
-	var testUser = new User({
-		username: 'jmar777',
-		password: 'Password123'
-	});
-	testUser.save(function(err) {
-		if (err) throw err;
-	});
-*/
-
 	User.getAuthenticated(req.body.username, req.body.password, function(err, user, reason){
-		if (err) throw err;
+		//if (err) throw err;
+		if(err){
+			console.log('login user - something wrong');
+			res.send(403, "AuthenticationFailed");
+		}
 		
         // login was successful if we have a user
         if (user) {
             // handle login success
             console.log('login success');
-			res.send([{User: user}]);
+		 res.send([{User: user}]); //REMEMBER TO ZERO PASSWORD
             return;
         }
         // otherwise we can determine why we failed
