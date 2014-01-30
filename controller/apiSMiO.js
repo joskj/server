@@ -19,21 +19,6 @@ var User = require('../model/user.js');
 var Trip = require('../model/trip.js');
 
 
-//AJAX USER REQUEST
-//app.get('/smio/api/user', apiSMiO.apiUserGetByEmail);	//Get spesific user by email?
-
-
-//Authenitcate a user, returns _id
-//app.post('/smio/api', apiSMiO.apiUserAuthenticate);		//Authenticate user, returns id
-//exports.apiUserAuthenticate = function(req,res){
-
-
-
-
-
-
-
-
 //FINAL V0.9 -- under her, bruk disse 
 
 //receive POST with username and password, returns id
@@ -85,11 +70,11 @@ exports.apiAuthenticate = function(req,res){
 }
 
 //Get spesific user by id, login returns this id
-//app.get('/smio/api/user/:id', apiSMiO.apiUserGetById);
+//app.get('/smio/api/user/:uid', apiSMiO.apiUserGetById);
 exports.apiUserGet = function(req,res){
 //	User.getAuthenticatedId(req.query.username, req.query.password, function(err, uu, reason){
 //		if(uu){
-			return User.findById(req.params.id, function(err, user){
+			return User.findById(req.params.uid, function(err, user){
 				if(user){
 					if(!err){
 						console.log("Suksess loading user",user);
@@ -137,9 +122,9 @@ exports.apiUserCreate = function(req,res){
 }
 
 //UPDATE spesific user by id
-//app.put('/smio/api/user/:id', apiSMiO.apiUserUpdate);
+//app.put('/smio/api/user/:uid', apiSMiO.apiUserUpdate);
 exports.apiUserUpdate = function(req,res){
-	return User.findById(req.params.id, function(err, user){
+	return User.findById(req.params.uid, function(err, user){
 		if(user){
 			//user.username= req.body.username;
 			//user.password= req.body.password;
@@ -168,10 +153,10 @@ exports.apiUserUpdate = function(req,res){
 }
 
 //Delete a spesific user, should we delete trips?
-//app.delete('/smio/api/user/:id, apiSMiO.apiUserDelet);
+//app.delete('/smio/api/user/:uid, apiSMiO.apiUserDelet);
 exports.apiUserDelete = function(req,res){
-	if(req.params.id){
-		return User.findById(req.params.id, function(err,user){
+	if(req.params.uid){
+		return User.findById(req.params.uid, function(err,user){
 			if(user){
 				return user.remove(function(err){
 					if(!err){

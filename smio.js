@@ -28,20 +28,20 @@ app.post('/smio/api', apiSMiO.apiAuthenticate);		//authenticate user, returns id
 
 //AJAX for user
 app.post('/smio/api/user', apiSMiO.apiUserCreate);		//POST, Create a user - returns user id
-app.get ('/smio/api/user/:id', apiSMiO.apiUserGet);		//GET specific user by id, login returns this id
-app.put ('/smio/api/user/:id', apiSMiO.apiUserUpdate);	//UPDATE specific user by id
-app.del ('/smio/api/user/:id', apiSMiO.apiUserDelete);	//DELETE a specific user, remembered to delete trips?
-//app.post('/smio/api/user/:id/resetPassword', apiSMiO.apiPasswordPost);//request password reset, username, password and newpassword - >send mail
-//app.get ('/smio/api/user/:id/resetPassword', apiSMiO.apiPasswordGet);	//authenticate the password reset using link in mail
+app.get ('/smio/api/user/:uid', apiSMiO.apiUserGet);		//GET specific user by id, login returns this id
+app.put ('/smio/api/user/:uid', apiSMiO.apiUserUpdate);	//UPDATE specific user by id
+app.del ('/smio/api/user/:uid', apiSMiO.apiUserDelete);	//DELETE a specific user, remembered to delete trips?
+//app.post('/smio/api/user/:uid/resetPassword', apiSMiO.apiPasswordPost);//request password reset, username, password and newpassword - >send mail
+//app.get ('/smio/api/user/:uid/resetPassword', apiSMiO.apiPasswordGet);	//authenticate the password reset using link in mail
 
 //TODO - trips
-//app.get('/smio/api/user/:userid/trips', apiSMiO.apiTripsGet);			//GET some data for all trips for a specific user (to fill in trips list view)
-//app.del('/smio/api/user/:userid/trips', apiSMiO.apiTripsDelete);		//DELETE all trips for the specific user
+//app.get('/smio/api/user/:uid/trips', apiSMiO.apiTripsGet);			//GET some data for all trips for a specific user (to fill in trips list view)
+//app.del('/smio/api/user/:uid/trips', apiSMiO.apiTripsDelete);		//DELETE ALL trips for the specific user
 
 //TODO - trip
-//app.post('/smio/api/user/:userid/trip, apiSMiO.apiTripPost);			//POST a new trip for a user
-//app.get('/smio/api/user/:userid/trip/:tripid, apiSMiO.apiTripGet);	//GET a specific trip for a user
-//app.del('/smio/api/user/:userid/trip/:tripid, apiSMiO.apiTripDelete);	//DELETE a specific trip for a user
+//app.post('/smio/api/user/:uid/trip, apiSMiO.apiTripPost);			//POST a new trip for a user
+//app.get('/smio/api/user/:uid/trip/:tripid, apiSMiO.apiTripGet);	//GET a specific trip for a user
+//app.del('/smio/api/user/:uid/trip/:tripid, apiSMiO.apiTripDelete);	//DELETE a specific trip for a user
 
 
 
