@@ -8,7 +8,6 @@ SALT_WORK_FACTOR = 10,
 MAX_LOGIN_ATTEMPTS = 5,
 LOCK_TIME = 2 * 60 * 60 * 1000;
 
-
 var userSchema = new Schema({
 	username: {type: String, required: true, index: true, index:{unique:true}},
 	password: {type: String, required:true},
@@ -49,7 +48,48 @@ userSchema.pre('save', function(next){
 			next();
 		});
 	});
+
+
+	/*
+	if(!user.isModified('passwordTemp')) return next();
+
+	// generate a salt
+	bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
+		if (err) return next(err);
+
+		// hash the passwordTemp using our new salt
+		bcrypt.hash(user.passwordTemp,salt,function(err,hash){
+			if(err) return next(err);
+			// set the hashed password back on our user document
+			user.passwordTemp=hash;
+			next();
+		});
+	});
+	*/
+
 });
+
+/*
+userSchema.pre('reset', function(next){
+	var user=this;
+
+	// only hash the password if it has been modified (or is new)
+	if(!user.isModified('passwordTemp')) return next();
+
+	// generate a salt
+	bcrypt.genSalt(SALT_WORK_FACTOR,function(err,salt){
+		if (err) return next(err);
+
+		// hash the passwordTemp using our new salt
+		bcrypt.hash(user.passwordTemp,salt,function(err,hash){
+			if(err) return next(err);
+			// set the hashed password back on our user document
+			user.passwordTemp=hash;
+			next();
+		});
+	});
+});
+*/
 
 userSchema.methods.comparePassword = function(candidatePassword, cb){
 	bcrypt.compare(candidatePassword, this.password, function(err,isMatch) {
@@ -82,11 +122,10 @@ var reasons = userSchema.statics.failedLogin = {
     MAX_ATTEMPTS: 2
 };
 
-//get user data
-userSchema.static.getUserData = function(username,password,cb){
+
+userSchema.statics.getAuthenticatedId = function(username, password, cb) {
     this.findOne({ username: username }, function(err, user) {
         if (err) return cb(err);
-
         // make sure the user exists
         if (!user) {
             return cb(null, null, reasons.NOT_FOUND);
@@ -116,10 +155,9 @@ userSchema.static.getUserData = function(username,password,cb){
                 };
                 return user.update(updates, function(err) {
                     if (err) return cb(err);
-                    return cb(null, user);
+                    return cb(null, user._id);
                 });
             }
-
             // password is incorrect, so increment login attempts before responding
             user.incLoginAttempts(function(err) {
                 if (err) return cb(err);
@@ -128,12 +166,10 @@ userSchema.static.getUserData = function(username,password,cb){
         });
     });
 };
-
 //Authentication
 userSchema.statics.getAuthenticated = function(username, password, cb) {
     this.findOne({ username: username }, function(err, user) {
         if (err) return cb(err);
-
         // make sure the user exists
         if (!user) {
             return cb(null, null, reasons.NOT_FOUND);
